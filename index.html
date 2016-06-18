@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script src="http://cdn.jsdelivr.net/sockjs/0.3/sockjs.min.js"></script>
+  <script>
+    $(function() {
+        conn = new SockJS('http://' + window.location.host + '/chat');
+        conn.onopen = function() {
+          alert("connected")
+        };
+        conn.onmessage = function(e) {
+          alert(e.data)
+        };
+        conn.onclose = function() {
+          alert("disconnected")
+          conn = null;
+        };
+      $('form').submit(function() {
+        var text = $('#text').val();
+        conn.send(text);
+        $('#text').val('').focus();
+        return false;
+      });
+    });
+</script>
+</head>
+<body>
+<form id="chatform">
+  <input id="text" type="text" />
+  <input type="submit" />
+</form>
+</body>
+</html>
